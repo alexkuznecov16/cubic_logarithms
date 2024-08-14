@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cubic and logarithmic inequalities</title>
+  <meta name='author' content='Alexander Kuznecov, Felix Vacko'>
+  <link href="./assets/styles/styles.css" rel="stylesheet"/>
+  <script src="https://kit.fontawesome.com/39bbe9b596.js" crossorigin="anonymous"></script>
+  		<!-- JQuery -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <h2 class="header-title">Cubic and logarithmic inequalities</h2>
+        <nav class="header__nav desktop">
+          <a href="./index.html">Home</a>
+          <a href="./assets/pages/about.html">About</a>
+          <a href="./assets/pages/contacts.html">Contacts</a>
+        </nav>
+        <i class="fa-solid fa-bars open-btn" id='mobileMenu-opener' onclick='mobileOpen()'></i>
+      </div>
+    </div>
+    <div class="mobile">
+      <i class="fa-solid fa-xmark close-btn" onclick='mobileClose()'></i>
+      <div class="mobile__inner">
+        <h2 class="mobile-title">Cubic and logarithmic inequalities</h2>
+        <nav class="mobile__nav">
+          <a href="./index.html">Home</a>
+          <a href="./assets/pages/about.html">About</a>
+          <a href="./assets/pages/contacts.html">Contacts</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class='Main'>
+    <div id="google_translate">Change language:</div>
+    <div class="container">
+      <div class="main__inner">
+        <div class="main-left">
+          <h3 class='formula notranslate'>ax<sup>3</sup> + bx<sup>2</sup> + cx + d > 0</h3>
+          <div class="inputs">
+            <div class="input">
+              <label for="input1" translate='no'>a:</label>
+              <input id='input1' name='input1'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='7'>
+            </div>
+            <div class="input">
+              <label for="input2" translate='no'>b:</label>
+              <input id='input2' name='input2'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='2'>
+            </div>
+            <div class="input">
+              <label for="input3" translate='no'>c:</label>
+              <input id='input3' name='input3'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='3'>
+            </div>
+            <div class="input">
+              <label for="input4" translate='no'>d:</label>
+              <input id='input4' name='input4'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='4'>
+            </div>
+          </div>
+          <button type='button' onclick='solve()'>Solve</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./assets/scripts/scripts.js"></script>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {pageLanguage: 'en', includedLanguages: 'en,lv,ru'},
+        'google_translate'
+      );
+    };
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

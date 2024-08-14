@@ -1,0 +1,88 @@
+<!-- 
+
+Короче. Что тебе нужно сделать: по дизайну из фигмы сделать блок контактов и ещё написать footer. В footer и Contacts пиши что угодно, это чисто твои блоки.
+
+Также оформи стили для: блоков с информацией (текста, параграфы, ссылки). Если хочешь - можешь добавить карту (чтобы указать откуда мы на карте). Всё что есть на дизайне - сделай в первую очередь. Если будут идеи как-то видоизменить блок контактов - отправь коммит через консоль (до того, как начнешь что-то экспериментировать)
+
+Для стилей есть файл в папке assets/styles. Найди там комментарий мой где будет написано: 
+
+Как работать двоём:
+
+1) Склонируй мой репозиторий в папку со своими проектами
+напиши в консоль: git clone https://github.com/alexkuznecov16/cubic-logarithmic-inequalities.git
+
+2) Напиши в консоль: git checkout -b имя_ветки
+можешь имя придумать сам, например: felix-code
+главное чтобы были ТОЛЬКО МАЛЕНЬКИЕ БУКВЫ ЛАТИНСКИЕ
+
+3) Чекни как я сделал блок главной страницы (если также будут идеи, то напиши или сделай комментарий)
+
+4) Пиши свои блоки
+
+5) Когда напишешь блоки, напиши в консоль: git add .
+
+и ещё напиши: git commit -m "Описание сделанных изменений"
+
+6) git push origin имя_ветки
+
+И напиши мне когда сделаешь всё это.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inequalities #Contacts</title>
+  <meta name='author' content='Alexander Kuznecov, Felix Vacko'>
+  <link href="../styles/styles.css" rel="stylesheet"/>
+  <script src="https://kit.fontawesome.com/39bbe9b596.js" crossorigin="anonymous"></script>
+  		<!-- JQuery - для перевода страницы -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <h2 class="header-title">Cubic and logarithmic inequalities</h2>
+        <nav class="header__nav desktop">
+          <a href="./index.html">Home</a>
+          <a href="./assets/pages/about.html">About</a>
+          <a href="./assets/pages/contacts.html">Contacts</a>
+        </nav>
+        <i class="fa-solid fa-bars open-btn" id='mobileMenu-opener' onclick='mobileOpen()'></i>
+      </div>
+    </div>
+    <div class="mobile">
+      <i class="fa-solid fa-xmark close-btn" onclick='mobileClose()'></i>
+      <div class="mobile__inner">
+        <h2 class="mobile-title">Cubic and logarithmic inequalities</h2>
+        <nav class="mobile__nav">
+          <a href="./index.html">Home</a>
+          <a href="./assets/pages/about.html">About</a>
+          <a href="./assets/pages/contacts.html">Contacts</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class='contacts'>
+    <div id="google_translate">Change language:</div>
+    <div class="container">
+      <!-- Тут пиши HTML -->
+    </div>
+  </main>
+  
+  <!-- Это для перевода страницы, я потом сделаю -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {pageLanguage: 'en', includedLanguages: 'en,lv,ru'},
+        'google_translate'
+      );
+    };
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
