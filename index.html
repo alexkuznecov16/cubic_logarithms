@@ -47,19 +47,19 @@
           <div class="inputs">
             <div class="input">
               <label for="input1" translate='no'>a:</label>
-              <input id='input1' name='input1'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='7'>
+              <input id='input1' name='input1' oninput="this.value = this.value.replace(/[^-0-9]/g, '');" type="number" min='-100' max='100' value='1'>
             </div>
             <div class="input">
               <label for="input2" translate='no'>b:</label>
-              <input id='input2' name='input2'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='2'>
+              <input id='input2' name='input2' oninput="this.value = this.value.replace(/[^-0-9]/g, '');" type="number" min='-100' max='100' value='2'>
             </div>
             <div class="input">
               <label for="input3" translate='no'>c:</label>
-              <input id='input3' name='input3'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='3'>
+              <input id='input3' name='input3' oninput="this.value = this.value.replace(/[^-0-9]/g, '');" type="number" min='-100' max='100' value='3'>
             </div>
             <div class="input">
               <label for="input4" translate='no'>d:</label>
-              <input id='input4' name='input4'  oninput="this.value = this.value.replace(/[^0-9]/g, '');" type="number" min='-100' max='100' value='4'>
+              <input id='input4' name='input4' oninput="this.value = this.value.replace(/[^-0-9]/g, '');" type="number" min='-100' max='100' value='4'>
             </div>
           </div>
           <button type='button' onclick='main()' id='solveBtn'>Solve</button>
