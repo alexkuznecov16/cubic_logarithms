@@ -70,14 +70,14 @@ const selectInequality = inequalityIndex => {
 // main function
 const main = () => {
 	const selectedInequality = parseInt(document.getElementById('test').value, 10); // get selected inequality index
-	const input1 = parseInt(document.getElementById('input1').value, 10);
-	const input2 = parseInt(document.getElementById('input2').value, 10);
-	const input3 = parseInt(document.getElementById('input3').value, 10);
-	const input4 = parseInt(document.getElementById('input4').value, 10);
+	const input1 = parseInt(document.getElementById('input1').value, 10); // a value
+	const input2 = parseInt(document.getElementById('input2').value, 10); // b value
+	const input3 = parseInt(document.getElementById('input3').value, 10); // c value
+	const input4 = parseInt(document.getElementById('input4').value, 10); // d value
 
-	const checking = check(selectedInequality, input1, input2, input3, input4);
+	const checking = check(selectedInequality, input1, input2, input3, input4); // returns array of result
 
-	result(checking[0], checking[1]);
+	result(checking[0], checking[1]); // send result
 };
 
 const check = (inequalityIndex, a, b, c, d) => {
