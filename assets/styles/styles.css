@@ -35,6 +35,7 @@ header {
   position: fixed;
   top: -100%;
   left: 0;
+  z-index: 100000;
   width: 100%;
   opacity: 0;
 
@@ -213,6 +214,7 @@ header {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
+  gap: 30px;
 }
 
 .main-left {
@@ -232,11 +234,20 @@ header {
 }
 
 .inputs .input {
+  position: relative;
   padding-top: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+}
+
+.error {
+  position: absolute;
+  bottom: -15px;
+  left: 2px;
+  font-size: 9px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .inputs .input input {
@@ -253,6 +264,7 @@ header {
 }
 
 .main-left button {
+  position: relative;
   margin-top: 20px;
   padding: 7px 9px;
   -webkit-border-radius: 2px;
@@ -261,14 +273,76 @@ header {
   -o-border-radius: 2px;
   border-radius: 2px;
   cursor: pointer;
-  border: 1px solid #34495E;
-  background-color: #F4F6F7;
+  background-color: #34495E;
+  color: #F1C40F;
   text-align: center;
 }
 
-.main-centre {
-
+.main-left button.disabled::after {
+  content: 'Disabled';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(0,0,0,.8);
 }
+
+.main-centre {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+textarea {
+  resize: none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 4px;
+}
+
+.main-centre canvas {
+  border: 1px solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.main__input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  margin: 0 auto;
+}
+
+/* DROPDOWN MENU start */
+.select2-container .select2-selection--single .select2-selection__rendered {
+  text-align: left;
+}
+
+.select2-search--dropdown .select2-search__field {
+  font-size: 21px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #b2eeac !important;
+  color: inherit !important;
+}
+
+/* DROPDOWN MENU end */
 
 .main-right {
   max-width: 300px;
