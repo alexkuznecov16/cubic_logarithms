@@ -99,9 +99,61 @@ const check = (inequalityIndex, a, b, c, d) => {
 	return result;
 };
 
+const myCanvas = document.getElementById('myCanvas');
+const ctx = myCanvas.getContext('2d');
+
+const cells = () => {
+	ctx.beginPath();
+	ctx.fillStyle = '#fff';
+	ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+	for (let i = 0; i < myCanvas.width; i += 20) {
+		ctx.moveTo(i, 0);
+		ctx.lineTo(i, myCanvas.height);
+	}
+
+	for (let j = 0; j < myCanvas.height; j += 20) {
+		ctx.moveTo(0, j);
+		ctx.lineTo(myCanvas.width, j);
+	}
+
+	ctx.strokeStyle = 'black';
+	ctx.lineWidth = 0.5;
+	ctx.stroke();
+
+	// x
+	ctx.beginPath();
+	ctx.moveTo(0, myCanvas.height / 2);
+	ctx.lineTo(myCanvas.width, myCanvas.height / 2);
+	ctx.lineWidth = 2;
+	ctx.stroke();
+
+	// y
+	ctx.beginPath();
+	ctx.moveTo(myCanvas.width / 2, 0);
+	ctx.lineTo(myCanvas.width / 2, myCanvas.height);
+	ctx.lineWidth = 2;
+	ctx.stroke();
+};
+
 const solve = (inequalityIndex, a, b, c, d) => {
+	cells();
 	// Logarithmic
 	if (inequalityIndex == 2) {
+		// Draw function graph
+		ctx.beginPath();
+		ctx.strokeStyle = 'green';
+		ctx.lineWidth = 2;
+		for (let x = 0; x < myCanvas.width; x++) {
+			let y = a * Math.log((b * (x - myCanvas.width / 2)) / 20 + c) + d;
+			// if y-value is negative
+			if (y < 0) {
+				y = myCanvas.height * (-1);
+			}
+			ctx.lineTo(x, myCanvas.height / 2 - y);
+		}
+		ctx.stroke();
+		ctx.closePath();
 		const exponent = -d / a; // Exponent (negative value for correct endline)
 		const exponentValue = Math.exp(exponent); // Exponent value
 		const root = (exponentValue - c) / b; // Root
