@@ -382,8 +382,7 @@ iframe {
 
 /* пиши пж все стили через классы, чтобы не было проблем с другими объектами*/
 
-
-@media screen and (max-width: 660px) {
+@media screen and (max-width: 1100px) {
   .header__nav.desktop {
     display: none;
   }
@@ -394,5 +393,24 @@ iframe {
 
   main #google_translate {
     display: none;
+  }
+
+  .main__inner {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main-right {
+    order: 1;
+    width: 100%;
+    padding: 0;
+  }
+  .main-centre {
+    order: 3;
+  }
+  .main-left {
+    order: 2;
+    width: 100%;
   }
 }
