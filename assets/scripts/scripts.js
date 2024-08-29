@@ -109,12 +109,12 @@ const cells = () => {
 	ctx.fillStyle = '#fff';
 	ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
 
-	for (let i = 0; i < myCanvas.width; i += 20) {
+	for (let i = 0; i < myCanvas.width; i += 10) {
 		ctx.moveTo(i, 0);
 		ctx.lineTo(i, myCanvas.height);
 	}
 
-	for (let j = 0; j < myCanvas.height; j += 20) {
+	for (let j = 0; j < myCanvas.height; j += 10) {
 		ctx.moveTo(0, j);
 		ctx.lineTo(myCanvas.width, j);
 	}
@@ -138,154 +138,174 @@ const cells = () => {
 	ctx.stroke();
 };
 
-// const solve = (inequalityIndex, a, b, c, d) => {
-// 	cells();
-// 	// Logarithmic
-// 	if (inequalityIndex == 2) {
-// 		// Draw function graph
-// 		ctx.beginPath();
-// 		ctx.strokeStyle = 'green';
-// 		ctx.lineWidth = 2;
-// 		for (let x = 0; x < myCanvas.width; x++) {
-// 			let y = a * Math.log((b * (x - myCanvas.width / 2)) / 20 + c) + d;
-// 			// if y-value is negative
-// 			if (y < 0) {
-// 				y = myCanvas.height * -1;
-// 			}
-// 			ctx.lineTo(x, myCanvas.height / 2 - y);
-// 		}
-// 		ctx.stroke();
-// 		ctx.closePath();
-
-// 		// Inequality roots
-// 		const exponent = -d / a;
-// 		const exponentValue = Math.exp(exponent);
-// 		const root = (exponentValue - c) / b;
-// 		const minX = -c / b;
-
-// 		const inequalitySign = a < 0 || b < 0 ? '>' : '<';
-// 		let interval;
-
-// 		if (inequalitySign === '>') {
-// 			interval = `(${root.toFixed(2)}, +∞)`;
-// 		} else {
-// 			interval = `(-∞, ${root.toFixed(2)})`;
-// 		}
-
-// 		if (inequalitySign === '>' && root < minX) {
-// 			interval = `(${minX.toFixed(2)}, +∞)`;
-// 		} else if (inequalitySign === '<' && root > minX) {
-// 			interval = `(${minX.toFixed(2)}, ${root.toFixed(2)})`;
-// 		} else if (inequalitySign === '>' && root > minX) {
-// 			interval = `(-∞, +∞)`;
-// 		}
-
-// 		console.log(`1) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) ${d < 0 ? '- ' + Math.abs(d) : '+ ' + d} < 0`);
-// 		console.log(`2) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) < ${-d} | /${a}`);
-// 		console.log(`3) ln(${b}x ${c < 0 ? c : '+ ' + c}) ${a < 0 ? '>' : '<'} ${-d / a}`);
-// 		console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
-// 		console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
-// 		console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
-// 		console.log(`Root: ${interval}`);
-
-// 		return [`Root: ${interval}`, true];
-
-// 		/* Как -d/a превратилось в степень экспонента?
-
-// 	Я использовал свойство натурального логарифма: если ln(a) = b, значит a = e^b
-// 	Пример: ln(7x + 3) < -2.5
-
-// 	Шаги:
-// 	1) используем: ln(a) = b, значит a = e^b
-// 	2) получаем: 7x + 3 < e^(-2.5)
-// 	3) Продолжаем решать неравенство.
-
-// 	Оно помогает нам устранить логарифм для решения неравенства.
-
-// 	Поэтому получилось => bx + c (< или >) e^(-d / a)
-
-// 	*/
-// 	}
-// };
-
 const solve = (inequalityIndex, a, b, c, d) => {
 	cells();
+	let resultText = '';
+	let isTrue = false;
 
-	if (inequalityIndex == 2) {
-		// Draw function graph
-		ctx.beginPath();
-		ctx.strokeStyle = 'green';
-		ctx.lineWidth = 2;
-
-		let xStart = -myCanvas.width / 2; // initial start x value
-		let xEnd = myCanvas.width / 2; // initial end x value
-
-		for (let x = xStart; x <= xEnd; x += 0.1) {
-			// Calculate the argument of the log function
-			let logArgument = (b * x) / 20 + c;
-			if (logArgument > 0) {
-				// Calculate the y value
-				let y = a * Math.log(logArgument) + d;
-				y = Math.min(Math.max(y, -myCanvas.height / 2), myCanvas.height / 2);
-				ctx.lineTo(x + myCanvas.width / 2, myCanvas.height / 2 - y);
-			} else {
-				// Draw horizontal line if logArgument <= 0
-				ctx.moveTo(x + myCanvas.width / 2, myCanvas.height);
-			}
-		}
-		ctx.stroke();
-		ctx.closePath();
-
-		// Inequality roots
-		const exponent = -d / a;
-		const exponentValue = Math.exp(exponent);
-		const root = (exponentValue - c) / b;
-		const minX = -c / b;
-
-		const inequalitySign = a < 0 || b < 0 ? '>' : '<';
-		let interval;
-
-		if (inequalitySign === '>') {
-			interval = `(${root.toFixed(2)}, +∞)`;
-		} else {
-			interval = `(-∞, ${root.toFixed(2)})`;
-		}
-
-		if (inequalitySign === '>' && root < minX) {
-			interval = `(${c} / ${b}, +∞)`;
-		} else if (inequalitySign === '<' && root > minX) {
-			interval = `(-${c} / ${b}, ${root.toFixed(2)})`;
-		} else if (inequalitySign === '>' && root > minX) {
-			interval = `(-∞, +∞)`;
-		}
-
-		console.log(`1) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) ${d < 0 ? '- ' + Math.abs(d) : '+ ' + d} < 0`);
-		console.log(`2) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) < ${-d} | /${a}`);
-		console.log(`3) ln(${b}x ${c < 0 ? c : '+ ' + c}) ${a < 0 ? '>' : '<'} ${-d / a}`);
-		console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
-		console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
-
-		/* Как -d/a превратилось в степень экспонента?
-
-	Я использовал свойство натурального логарифма: если ln(a) = b, значит a = e^b
-	Пример: ln(7x + 3) < -2.5
-
-	Шаги:
-	1) используем: ln(a) = b, значит a = e^b
-	2) получаем: 7x + 3 < e^(-2.5)
-	3) Продолжаем решать неравенство.
-
-	Оно помогает нам устранить логарифм для решения неравенства.
-
-	Поэтому получилось => bx + c (< или >) e^(-d / a)
-
-	*/
-
-		console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
-		console.log(`Root: ${interval}`);
-
-		return [`Root: ${interval}`, true];
+	if (inequalityIndex == 1) {
+		[resultText, isTrue] = cubicSolve(a, b, c, d);
+	} else if (inequalityIndex == 2) {
+		[resultText, isTrue] = logarithmicSolve(a, b, c, d);
 	}
+
+	result(resultText, isTrue);
+};
+
+function cubicSolve(a, b, c, d) {
+	if (Math.abs(a) === 0) {
+		a = b;
+		b = c;
+		c = d;
+		if (Math.abs(a) === 0) {
+			a = b;
+			b = c;
+			if (Math.abs(a) === 0) return ['', false];
+			return [[-b / a].join('\n'), true];
+		}
+
+		var D = b * b - 4 * a * c;
+		if (Math.abs(D) === 0) return [[-b / (2 * a)].join('\n'), true];
+		else if (D > 0) return [[(-b + Math.sqrt(D)) / (2 * a), (-b - Math.sqrt(D)) / (2 * a)].join('\n'), true];
+		return ['', false];
+	}
+
+	var p = (3 * a * c - b * b) / (3 * a * a);
+	var q = (2 * b * b * b - 9 * a * b * c + 27 * a * a * d) / (27 * a * a * a);
+	var x1, x2, x3;
+
+	if (Math.abs(p) === 0) {
+		x1 = [Math.cbrt(-q)];
+		ctx.moveTo(0, 300);
+		ctx.bezierCurveTo(100, -310, 120, 722, 280, 0);
+		ctx.lineTo(330, 0);
+		ctx.lineTo(300, 13);
+		ctx.stroke();
+		return [`x1: ${x1.join('\n')}\nMultiple Roots`, true];
+	} else if (Math.abs(q) === 0) {
+		x1 = 1;
+		x2 = Math.sqrt(-p);
+		x3 = -Math.sqrt(-p);
+		ctx.moveTo(0, 300);
+		ctx.bezierCurveTo(100, -310, 222, 434, 280, 0);
+		ctx.lineTo(330, 0);
+		ctx.lineTo(300, 13);
+		ctx.stroke();
+		return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n1 Root`, true];
+	} else {
+		var D = (q * q) / 4 + (p * p * p) / 27;
+		if (Math.abs(D) === 0) {
+			x1 = (-1.5 * q) / p;
+			x2 = (3 * q) / p;
+			x3 = 0;
+			ctx.moveTo(0, 300);
+			ctx.bezierCurveTo(100, -310, 111, 545, 280, 0);
+			ctx.lineTo(330, 0);
+			ctx.lineTo(300, 13);
+			ctx.stroke();
+			return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n2 Roots`, true];
+		} else if (D > 0) {
+			var u = Math.cbrt(-q / 2 - Math.sqrt(D));
+			x1 = u - p / (3 * u);
+			x2 = (-b + Math.sqrt(D)) / (2 * a);
+			x3 = (-b - Math.sqrt(D)) / (2 * a);
+			ctx.moveTo(0, 300);
+			ctx.bezierCurveTo(120, -310, 121, 434, 250, 0);
+			ctx.lineTo(330, 0);
+			ctx.lineTo(300, 13);
+			ctx.stroke();
+			return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n1 Valid Root`, true];
+		} else {
+			var u = 2 * Math.sqrt(-p / 3);
+			var t = Math.acos((3 * q) / p / u) / 3;
+			var k = (2 * Math.PI) / 3;
+			x1 = u * Math.cos(t);
+			x2 = u * Math.cos(t - k);
+			x3 = u * Math.cos(t - 2 * k);
+			ctx.moveTo(0, 300);
+			ctx.bezierCurveTo(100, -310, 100, 600, 280, 0);
+			ctx.lineTo(330, 0);
+			ctx.lineTo(300, 13);
+			ctx.stroke();
+			return [`${x1}\n${x2}\n${x3}\nAll 3 Roots`, true];
+		}
+	}
+}
+
+const logarithmicSolve = (a, b, c, d) => {
+	// Draw function graph
+	ctx.beginPath();
+	ctx.strokeStyle = 'green';
+	ctx.lineWidth = 2;
+
+	let xStart = -myCanvas.width / 2; // initial start x value
+	let xEnd = myCanvas.width / 2; // initial end x value
+
+	for (let x = xStart; x <= xEnd; x += 0.1) {
+		// Calculate the argument of the log function
+		let logArgument = (b * x) / 20 + c;
+		if (logArgument > 0) {
+			// Calculate the y value
+			let y = a * Math.log(logArgument) + d;
+			y = Math.min(Math.max(y, -myCanvas.height / 2), myCanvas.height / 2);
+			ctx.lineTo(x + myCanvas.width / 2, myCanvas.height / 2 - y);
+		} else {
+			// Draw horizontal line if logArgument <= 0
+			ctx.moveTo(x + myCanvas.width / 2, myCanvas.height);
+		}
+	}
+	ctx.stroke();
+	ctx.closePath();
+
+	// Inequality roots
+	const exponent = -d / a;
+	const exponentValue = Math.exp(exponent);
+	const root = (exponentValue - c) / b;
+	const minX = -c / b;
+
+	const inequalitySign = a < 0 || b < 0 ? '>' : '<';
+	let interval;
+
+	if (inequalitySign === '>') {
+		interval = `(${root.toFixed(2)}, +∞)`;
+	} else {
+		interval = `(-∞, ${root.toFixed(2)})`;
+	}
+
+	if (inequalitySign === '>' && root < minX) {
+		interval = `(${c} / ${b}, +∞)`;
+	} else if (inequalitySign === '<' && root > minX) {
+		interval = `(-${c} / ${b}, ${root.toFixed(2)})`;
+	} else if (inequalitySign === '>' && root > minX) {
+		interval = `(-∞, +∞)`;
+	}
+
+	console.log(`1) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) ${d < 0 ? '- ' + Math.abs(d) : '+ ' + d} < 0`);
+	console.log(`2) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) < ${-d} | /${a}`);
+	console.log(`3) ln(${b}x ${c < 0 ? c : '+ ' + c}) ${a < 0 ? '>' : '<'} ${-d / a}`);
+	console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
+	console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
+
+	/* Как -d/a превратилось в степень экспонента?
+
+Я использовал свойство натурального логарифма: если ln(a) = b, значит a = e^b
+Пример: ln(7x + 3) < -2.5
+
+Шаги:
+1) используем: ln(a) = b, значит a = e^b
+2) получаем: 7x + 3 < e^(-2.5)
+3) Продолжаем решать неравенство.
+
+Оно помогает нам устранить логарифм для решения неравенства.
+
+Поэтому получилось => bx + c (< или >) e^(-d / a)
+
+*/
+
+	console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
+	console.log(`Root: ${interval}`);
+
+	return [`Root: ${interval}`, true];
 };
 
 const result = (text, isTrue) => {
