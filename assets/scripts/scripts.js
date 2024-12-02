@@ -147,6 +147,7 @@ const solve = (inequalityIndex, a, b, c, d) => {
 	let resultText = '';
 	let isTrue = false;
 
+	// в зависимости какую пользователь выбрал функцию
 	if (inequalityIndex == 1) {
 		[resultText, isTrue] = cubicSolve(a, b, c, d, ctx);
 	} else if (inequalityIndex == 2) {
@@ -172,13 +173,14 @@ const cubicSolve = (a, b, c, d) => {
 	const maxX = centerX / scaleX; // right graph border
 	const step = 0.01; // graph draw step
 
+	// пока x не превысил максимум прибавляем x к step
 	for (let x = minX; x <= maxX; x += step) {
 		const y = a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d;
 
+		// да
 		// coords convert to px
 		const screenX = centerX + x * scaleX;
 		const screenY = centerY - y * scaleY;
-
 		// line draw
 		if (x === minX) {
 			ctx.moveTo(screenX, screenY);
@@ -186,6 +188,7 @@ const cubicSolve = (a, b, c, d) => {
 			ctx.lineTo(screenX, screenY);
 		}
 	}
+	// это график сам
 
 	ctx.stroke();
 
