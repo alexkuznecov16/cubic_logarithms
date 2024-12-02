@@ -58,44 +58,48 @@ const selectInequality = inequalityIndex => {
 		btn.disabled = false;
 		btn.classList.remove('disabled');
 		errorText.style.color = 'green'; // not error color
-		errorText.innerHTML = 'Valid inequality'; // not error text
+		errorText.innerHTML = 'Derīga nevienādība'; // not error text
 
 		const formulaArea = document.querySelector('.formula');
 		if (inequalityIndex == 2) {
 			formulaArea.innerHTML = `a ln(bx + c) + d &lt; 0`;
+		} else if (inequalityIndex == 1) {
+			formulaArea.innerHTML = `ax<sup>3</sup> + bx<sup>2</sup> + cx + d > 0`;
 		}
 	} else {
 		btn.disabled = true;
 		btn.classList.add('disabled');
 		errorText.style.color = 'red'; // error color
-		errorText.innerHTML = 'Error: invalid inequality'; // error text
+		errorText.innerHTML = 'Kļūda: nederīga nevienādība'; // error text
 	}
 };
 
 // main function
 const main = () => {
-	const selectedInequality = parseInt(document.getElementById('test').value, 10); // get selected inequality index
-	const input1 = parseInt(document.getElementById('input1').value, 10); // a value
-	const input2 = parseInt(document.getElementById('input2').value, 10); // b value
-	const input3 = parseInt(document.getElementById('input3').value, 10); // c value
-	const input4 = parseInt(document.getElementById('input4').value, 10); // d value
+	const selectedInequality = parseInt(document.getElementById('test').value); // get selected inequality index
+	const input1 = parseInt(document.getElementById('input1').value); // a value
+	const input2 = parseInt(document.getElementById('input2').value); // b value
+	const input3 = parseInt(document.getElementById('input3').value); // c value
+	const input4 = parseInt(document.getElementById('input4').value); // d value
 
 	const checking = check(selectedInequality, input1, input2, input3, input4); // returns array of result
 
-	result(checking[0], checking[1]); // send result
+	if (checking[1]) {
+		solve(selectedInequality, input1, input2, input3, input4); // send result
+	} else {
+		result(checking[0], checking[1]);
+	}
 };
 
 const check = (inequalityIndex, a, b, c, d) => {
-	let result = ''; // initial result
+	let result = ['', true]; // initial result
 
 	if (a < -100 || a > 100 || b < -100 || b > 100 || c < -100 || c > 100 || d < -100 || d > 100) {
-		result = ['Please enter numbers less than 100 and bigger than -100.', false];
-	} else if (b === 0 && c <= 0) {
-		result = [`Invalid input: if b = 0, then c must be positive.`, false];
-	} else if (inequalityIndex) {
-		const solving = solve(inequalityIndex, a, b, c, d);
-
-		result = [solving[0], solving[1]];
+		result = ['Lūdzu, ievadiet skaitļus, kas mazāks par 100 un lielāks par -100.', false];
+	} else if (b === 0 && c <= 0 && inequalityIndex == 2) {
+		result = [`Nederīgs ievads: ja b = 0, tad c jābūt pozitīvam.`, false];
+	} else if (inequalityIndex <= 0 || inequalityIndex > 2) {
+		result = ['Lūdzu, izvēlieties pareizo nevienādību.', false];
 	}
 
 	return result;
@@ -119,7 +123,7 @@ const cells = () => {
 		ctx.lineTo(myCanvas.width, j);
 	}
 
-	ctx.strokeStyle = 'black';
+	ctx.strokeStyle = 'rgba(0,0,0,.4)';
 	ctx.lineWidth = 0.5;
 	ctx.stroke();
 
@@ -144,7 +148,7 @@ const solve = (inequalityIndex, a, b, c, d) => {
 	let isTrue = false;
 
 	if (inequalityIndex == 1) {
-		[resultText, isTrue] = cubicSolve(a, b, c, d);
+		[resultText, isTrue] = cubicSolve(a, b, c, d, ctx);
 	} else if (inequalityIndex == 2) {
 		[resultText, isTrue] = logarithmicSolve(a, b, c, d);
 	}
@@ -152,85 +156,81 @@ const solve = (inequalityIndex, a, b, c, d) => {
 	result(resultText, isTrue);
 };
 
-function cubicSolve(a, b, c, d) {
-	if (Math.abs(a) === 0) {
-		a = b;
-		b = c;
-		c = d;
-		if (Math.abs(a) === 0) {
-			a = b;
-			b = c;
-			if (Math.abs(a) === 0) return ['', false];
-			return [[-b / a].join('\n'), true];
-		}
+const cubicSolve = (a, b, c, d) => {
+	const centerX = myCanvas.width / 2; // x center
+	const centerY = myCanvas.height / 2; // y center
+	const scaleX = 10; // canvas step by x (10px = 1x)
+	const scaleY = 10; // canvas step by y (10px = 1y)
 
-		var D = b * b - 4 * a * c;
-		if (Math.abs(D) === 0) return [[-b / (2 * a)].join('\n'), true];
-		else if (D > 0) return [[(-b + Math.sqrt(D)) / (2 * a), (-b - Math.sqrt(D)) / (2 * a)].join('\n'), true];
-		return ['', false];
-	}
+	// draw graph start
+	ctx.beginPath();
+	ctx.strokeStyle = 'blue';
+	ctx.lineWidth = 1.5;
 
-	var p = (3 * a * c - b * b) / (3 * a * a);
-	var q = (2 * b * b * b - 9 * a * b * c + 27 * a * a * d) / (27 * a * a * a);
-	var x1, x2, x3;
+	// border and graph steps
+	const minX = -centerX / scaleX; // left graph border
+	const maxX = centerX / scaleX; // right graph border
+	const step = 0.01; // graph draw step
 
-	if (Math.abs(p) === 0) {
-		x1 = [Math.cbrt(-q)];
-		ctx.moveTo(0, 300);
-		ctx.bezierCurveTo(100, -310, 120, 722, 280, 0);
-		ctx.lineTo(330, 0);
-		ctx.lineTo(300, 13);
-		ctx.stroke();
-		return [`x1: ${x1.join('\n')}\nMultiple Roots`, true];
-	} else if (Math.abs(q) === 0) {
-		x1 = 1;
-		x2 = Math.sqrt(-p);
-		x3 = -Math.sqrt(-p);
-		ctx.moveTo(0, 300);
-		ctx.bezierCurveTo(100, -310, 222, 434, 280, 0);
-		ctx.lineTo(330, 0);
-		ctx.lineTo(300, 13);
-		ctx.stroke();
-		return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n1 Root`, true];
-	} else {
-		var D = (q * q) / 4 + (p * p * p) / 27;
-		if (Math.abs(D) === 0) {
-			x1 = (-1.5 * q) / p;
-			x2 = (3 * q) / p;
-			x3 = 0;
-			ctx.moveTo(0, 300);
-			ctx.bezierCurveTo(100, -310, 111, 545, 280, 0);
-			ctx.lineTo(330, 0);
-			ctx.lineTo(300, 13);
-			ctx.stroke();
-			return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n2 Roots`, true];
-		} else if (D > 0) {
-			var u = Math.cbrt(-q / 2 - Math.sqrt(D));
-			x1 = u - p / (3 * u);
-			x2 = (-b + Math.sqrt(D)) / (2 * a);
-			x3 = (-b - Math.sqrt(D)) / (2 * a);
-			ctx.moveTo(0, 300);
-			ctx.bezierCurveTo(120, -310, 121, 434, 250, 0);
-			ctx.lineTo(330, 0);
-			ctx.lineTo(300, 13);
-			ctx.stroke();
-			return [`x1: ${x1}\nx2: ${x2}\nx3: ${x3}\n1 Valid Root`, true];
+	for (let x = minX; x <= maxX; x += step) {
+		const y = a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d;
+
+		// coords convert to px
+		const screenX = centerX + x * scaleX;
+		const screenY = centerY - y * scaleY;
+
+		// line draw
+		if (x === minX) {
+			ctx.moveTo(screenX, screenY);
 		} else {
-			var u = 2 * Math.sqrt(-p / 3);
-			var t = Math.acos((3 * q) / p / u) / 3;
-			var k = (2 * Math.PI) / 3;
-			x1 = u * Math.cos(t);
-			x2 = u * Math.cos(t - k);
-			x3 = u * Math.cos(t - 2 * k);
-			ctx.moveTo(0, 300);
-			ctx.bezierCurveTo(100, -310, 100, 600, 280, 0);
-			ctx.lineTo(330, 0);
-			ctx.lineTo(300, 13);
-			ctx.stroke();
-			return [`${x1}\n${x2}\n${x3}\nAll 3 Roots`, true];
+			ctx.lineTo(screenX, screenY);
 		}
 	}
-}
+
+	ctx.stroke();
+
+	b /= a;
+	c /= a;
+	d /= a;
+	const p = c - (b * b) / 3;
+	const q = (2 * Math.pow(b, 3)) / 27 - (b * c) / 3 + d;
+	const discriminant = Math.pow(q / 2, 2) + Math.pow(p / 3, 3);
+
+	let roots = [];
+
+	if (discriminant > 0) {
+		const u = Math.cbrt(-q / 2 + Math.sqrt(discriminant));
+		const v = Math.cbrt(-q / 2 - Math.sqrt(discriminant));
+		const x1 = u + v - b / 3;
+		roots.push(parseFloat(x1.toFixed(2)));
+	} else if (discriminant === 0) {
+		const u = Math.cbrt(-q / 2);
+		const x1 = 2 * u - b / 3;
+		const x2 = -u - b / 3;
+		roots.push(parseFloat(x1.toFixed(2)), parseFloat(x2.toFixed(2)));
+	} else {
+		const r = Math.sqrt(-Math.pow(p / 3, 3));
+		const phi = Math.acos(-q / (2 * r));
+		const x1 = 2 * Math.cbrt(r) * Math.cos(phi / 3) - b / 3;
+		const x2 = 2 * Math.cbrt(r) * Math.cos((phi + 2 * Math.PI) / 3) - b / 3;
+		const x3 = 2 * Math.cbrt(r) * Math.cos((phi + 4 * Math.PI) / 3) - b / 3;
+		roots.push(parseFloat(x1.toFixed(2)), parseFloat(x2.toFixed(2)), parseFloat(x3.toFixed(2)));
+	}
+
+	roots.sort((a, b) => a - b);
+	const intervals = [];
+	for (let i = 0; i <= roots.length; i++) {
+		const left = i === 0 ? -Infinity : roots[i - 1];
+		const right = i === roots.length ? Infinity : roots[i];
+		const mid = (left + right) / 2;
+		const y = a * Math.pow(mid, 3) + b * Math.pow(mid, 2) + c * mid + d;
+		if (y > 0) {
+			intervals.push(`(${left === -Infinity ? '-∞' : left.toFixed(2)}; ${right === Infinity ? '∞' : right.toFixed(2)})`);
+		}
+	}
+
+	return [`x ∈ ${intervals.join(' ∪ ')}`, true];
+};
 
 const logarithmicSolve = (a, b, c, d) => {
 	// Draw function graph
@@ -305,7 +305,7 @@ const logarithmicSolve = (a, b, c, d) => {
 	console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
 	console.log(`Root: ${interval}`);
 
-	return [`Root: ${interval}`, true];
+	return [`x ∈ ${interval}`, true];
 };
 
 const result = (text, isTrue) => {
