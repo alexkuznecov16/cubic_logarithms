@@ -25,27 +25,27 @@ const mobileClose = () => {
 	document.body.style.overflow = '';
 };
 
-// google translate position change
-function updateTranslatePosition() {
-	// variables
-	const googleTranslate = document.querySelector('#google_translate'); // google translate element
-	const mobileInner = document.querySelector('.mobile__inner'); // mobile container
-	const main = document.querySelector('main'); // main container
+// // google translate position change
+// function updateTranslatePosition() {
+// 	// variables
+// 	const googleTranslate = document.querySelector('#google_translate'); // google translate element
+// 	const mobileInner = document.querySelector('.mobile__inner'); // mobile container
+// 	const main = document.querySelector('main'); // main container
 
-	if (window.innerWidth <= 900) {
-		if (googleTranslate.parentElement !== mobileInner) {
-			mobileInner.appendChild(googleTranslate); // return to mobileInner container
-		}
-	} else {
-		if (googleTranslate.parentElement !== main) {
-			main.appendChild(googleTranslate); // return to main container
-		}
-	}
-}
+// 	if (window.innerWidth <= 900) {
+// 		if (googleTranslate.parentElement !== mobileInner) {
+// 			mobileInner.appendChild(googleTranslate); // return to mobileInner container
+// 		}
+// 	} else {
+// 		if (googleTranslate.parentElement !== main) {
+// 			main.appendChild(googleTranslate); // return to main container
+// 		}
+// 	}
+// }
 
-// event listeners
-window.addEventListener('DOMContentLoaded', updateTranslatePosition); // on refresh
-window.addEventListener('resize', updateTranslatePosition); // on resize (width change)
+// // event listeners
+// window.addEventListener('DOMContentLoaded', updateTranslatePosition); // on refresh
+// window.addEventListener('resize', updateTranslatePosition); // on resize (width change)
 
 // Main javascript code
 const errorText = document.querySelector('.error'); // error text
@@ -53,6 +53,7 @@ const errorText = document.querySelector('.error'); // error text
 // Select inequality by <select> in html
 const selectInequality = inequalityIndex => {
 	const btn = document.getElementById('solveBtn');
+	const koeficienti = document.querySelector('.coefficients-info');
 
 	if (inequalityIndex > 0) {
 		btn.disabled = false;
@@ -63,14 +64,37 @@ const selectInequality = inequalityIndex => {
 		const formulaArea = document.querySelector('.formula');
 		if (inequalityIndex == 2) {
 			formulaArea.innerHTML = `a ln(bx + c) + d &lt; 0`;
+			koeficienti.innerHTML = `            <details>
+              <summary>
+                Koeficientu ietekme
+              </summary>
+              <ul>
+                <li><b>a:</b> Mērogo grafiku pa Y asi. Ja <b>a > 0</b>, grafiks ir augošs; ja <b>a < 0</b>, grafiks ir dilstošs.</li>
+                <li><b>b:</b> Izstiepšana/saspiešana pa X asi. Ja <b>b > 0</b>, grafiks būs šaurāks; ja <b>b < 0</b>, grafiks būs platāks.</li>
+                <li><b>c:</b> Grafika nobīde pa X asi. Ja <b>c > 0</b>, grafiks pārvietojas pa labi; ja <b>c < 0</b>, pa kreisi.</li>
+                <li><b>d:</b> Grafika nobīde uz augšu (<b>d > 0</b>) vai uz leju (<b>d < 0</b>).</li>
+              </ul>
+            </details>`;
 		} else if (inequalityIndex == 1) {
 			formulaArea.innerHTML = `ax<sup>3</sup> + bx<sup>2</sup> + cx + d > 0`;
+			koeficienti.innerHTML = `            <details>
+              <summary>
+                Koeficientu ietekme
+              </summary>
+              <ul>
+                <li><b>a:</b> Mērogo grafiku pa Y asi. Ja <b>a > 0</b>, grafiks ir vērsts uz augšu; ja <b>a < 0</b>, uz leju. Tas arī nosaka, vai grafiks ir ar diviem ekstremiem (augšup un lejup) vai tikai vienu.</li>
+                <li><b>b:</b> Izstiepšana/saspiešana pa X asi. Ja <b>b > 0</b>, grafiks būs šaurāks; ja <b>b < 0</b>, grafiks būs platāks.</li>
+                <li><b>c:</b> Grafika nobīde pa X asi. Ja <b>c > 0</b>, grafiks pārvietojas pa labi; ja <b>c < 0</b>, pa kreisi.</li>
+                <li><b>d:</b> Grafika nobīde uz augšu (<b>d > 0</b>) vai uz leju (<b>d < 0</b>).</li>
+              </ul>
+            </details>`;
 		}
 	} else {
 		btn.disabled = true;
 		btn.classList.add('disabled');
 		errorText.style.color = 'red'; // error color
 		errorText.innerHTML = 'Kļūda: nederīga nevienādība'; // error text
+		koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
 	}
 };
 
@@ -158,38 +182,29 @@ const solve = (inequalityIndex, a, b, c, d) => {
 };
 
 const cubicSolve = (a, b, c, d) => {
-	const centerX = myCanvas.width / 2; // x center
-	const centerY = myCanvas.height / 2; // y center
-	const scaleX = 10; // canvas step by x (10px = 1x)
-	const scaleY = 10; // canvas step by y (10px = 1y)
+	const centerX = myCanvas.width / 2;
+	const centerY = myCanvas.height / 2;
+	const scaleX = 10;
+	const scaleY = 10;
 
-	// draw graph start
 	ctx.beginPath();
 	ctx.strokeStyle = 'blue';
 	ctx.lineWidth = 1.5;
 
-	// border and graph steps
-	const minX = -centerX / scaleX; // left graph border
-	const maxX = centerX / scaleX; // right graph border
-	const step = 0.01; // graph draw step
+	const minX = -centerX / scaleX;
+	const maxX = centerX / scaleX;
+	const step = 0.01;
 
-	// пока x не превысил максимум прибавляем x к step
 	for (let x = minX; x <= maxX; x += step) {
 		const y = a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d;
-
-		// да
-		// coords convert to px
 		const screenX = centerX + x * scaleX;
 		const screenY = centerY - y * scaleY;
-		// line draw
 		if (x === minX) {
 			ctx.moveTo(screenX, screenY);
 		} else {
 			ctx.lineTo(screenX, screenY);
 		}
 	}
-	// это график сам
-
 	ctx.stroke();
 
 	b /= a;
@@ -232,6 +247,19 @@ const cubicSolve = (a, b, c, d) => {
 		}
 	}
 
+	// ctx.fillStyle = 'rgba(255, 0, 0, 0.3)'; // Полупрозрачный красный
+
+	// for (const interval of intervals) {
+	// 	const left = interval.includes('-∞') ? -Infinity : parseFloat(interval.split(';')[0].replace(/[^\d.-]/g, ''));
+	// 	const right = interval.includes('∞') ? Infinity : parseFloat(interval.split(';')[1].replace(/[^\d.-]/g, ''));
+
+	// 	// Преобразуем координаты в пиксели
+	// 	const startX = left === -Infinity ? 0 : centerX + left * scaleX;
+	// 	const endX = right === Infinity ? myCanvas.width : centerX + right * scaleX;
+
+	// 	ctx.fillRect(Math.min(startX, endX), 0, Math.abs(endX - startX), myCanvas.height);
+	// }
+
 	return [`x ∈ ${intervals.join(' ∪ ')}`, true];
 };
 
@@ -241,26 +269,34 @@ const logarithmicSolve = (a, b, c, d) => {
 	ctx.strokeStyle = 'green';
 	ctx.lineWidth = 2;
 
-	let xStart = -myCanvas.width / 2; // initial start x value
-	let xEnd = myCanvas.width / 2; // initial end x value
+	let xStart = -myCanvas.width / 2; // start x-coordinate in canvas
+	let xEnd = myCanvas.width / 2; // end x-coordinate in canvas
 
-	for (let x = xStart; x <= xEnd; x += 0.1) {
-		// Calculate the argument of the log function
-		let logArgument = (b * x) / 20 + c;
+	// Scale for real values
+	const xScale = 10; // Adjust for scaling the x-axis
+	const yScale = 10; // Adjust for scaling the y-axis
+
+	for (let x = xStart / xScale; x <= xEnd / xScale; x += 0.01) {
+		// smaller step for smoother graph
+		let logArgument = b * x + c; // Argument of the logarithm
 		if (logArgument > 0) {
-			// Calculate the y value
-			let y = a * Math.log(logArgument) + d;
-			y = Math.min(Math.max(y, -myCanvas.height / 2), myCanvas.height / 2);
-			ctx.lineTo(x + myCanvas.width / 2, myCanvas.height / 2 - y);
+			let y = a * Math.log(logArgument) + d; // Calculate y value
+			let canvasX = x * xScale + myCanvas.width / 2; // Scale x for canvas
+			let canvasY = myCanvas.height / 2 - y * yScale; // Scale y for canvas (invert y)
+
+			if (x === xStart / xScale) {
+				ctx.moveTo(canvasX, canvasY); // Move to first point
+			} else {
+				ctx.lineTo(canvasX, canvasY); // Draw line
+			}
 		} else {
-			// Draw horizontal line if logArgument <= 0
-			ctx.moveTo(x + myCanvas.width / 2, myCanvas.height);
+			ctx.moveTo(x * xScale + myCanvas.width / 2, myCanvas.height); // Skip invalid points
 		}
 	}
 	ctx.stroke();
 	ctx.closePath();
 
-	// Inequality roots
+	// Inequality roots calculation
 	const exponent = -d / a;
 	const exponentValue = Math.exp(exponent);
 	const root = (exponentValue - c) / b;
@@ -289,22 +325,6 @@ const logarithmicSolve = (a, b, c, d) => {
 	console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
 	console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
 
-	/* Как -d/a превратилось в степень экспонента?
-
-Я использовал свойство натурального логарифма: если ln(a) = b, значит a = e^b
-Пример: ln(7x + 3) < -2.5
-
-Шаги:
-1) используем: ln(a) = b, значит a = e^b
-2) получаем: 7x + 3 < e^(-2.5)
-3) Продолжаем решать неравенство.
-
-Оно помогает нам устранить логарифм для решения неравенства.
-
-Поэтому получилось => bx + c (< или >) e^(-d / a)
-
-*/
-
 	console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
 	console.log(`Root: ${interval}`);
 
@@ -320,4 +340,16 @@ const result = (text, isTrue) => {
 	} else {
 		textarea.style.color = 'red';
 	}
+};
+
+const refresh = () => {
+	const koeficienti = document.querySelector('.coefficients-info');
+	const textarea = document.getElementById('result-area');
+	errorText.innerHTML = '';
+	koeficienti.innerHTML = '';
+	textarea.value = '';
+
+	ctx.beginPath();
+	ctx.fillStyle = '#fff';
+	ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
 };
