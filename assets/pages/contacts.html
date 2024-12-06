@@ -8,7 +8,7 @@
   <meta name='author' content='Alexander Kuznecov, Felix Vacko'>
   <link href="../styles/styles.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/39bbe9b596.js" crossorigin="anonymous"></script>
-  <!-- JQuery - для перевода страницы -->
+  <!-- JQuery -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
@@ -17,11 +17,11 @@
   <header class="header">
     <div class="container">
       <div class="header__inner">
-        <h2 class="header-title">Cubic and logarithmic inequalities</h2>
+        <h2 class="header-title">Kubiskās un logaritmiskās nevienādības</h2>
         <nav class="header__nav desktop">
-          <a href="../../index.html">Home</a>
-          <a href="./about.html">About</a>
-          <a href="./contacts.html">Contacts</a>
+          <a href="../../index.html">Sākumlapa</a>
+          <a href="./assets/pages/about.html">Par</a>
+          <a href="./assets/pages/contacts.html">Kontakti</a>
         </nav>
         <i class="fa-solid fa-bars open-btn" id='mobileMenu-opener' onclick='mobileOpen()'></i>
       </div>
@@ -31,17 +31,39 @@
       <div class="mobile__inner">
         <h2 class="mobile-title">Cubic and logarithmic inequalities</h2>
         <nav class="mobile__nav">
-          <a href="./index.html">Home</a>
+          <a href="./index.html">Sākumlapa</a>
           <a href="./assets/pages/about.html">About</a>
           <a href="./assets/pages/contacts.html">Contacts</a>
         </nav>
       </div>
     </div>
   </header>
-  <main class='contacts'>
+  <main class="contacts">
     <div class="container">
+      <div class="contacts__inner">
+        <div class="contacts__item">
+          <h3 class="contacts__name">Aleksandrs Kuzņecovs</h3>
+          <p class="contacts__class">12.a klase</p>
+          <p class="contacts__links">
+            <a href="mailto:aleksandrs.kuznecovs@example.com" class="contacts__email">aleksandrs.kuznecovs@example.com</a>
+            <a href="https://github.com/aleksandrs-kuznecovs" class="contacts__github" target="_blank">GitHub</a>
+          </p>
+        </div>
+        <div class="contacts__item">
+          <h3 class="contacts__name">Felikss Vacko</h3>
+          <p class="contacts__class">12.a klase</p>
+          <p class="contacts__links">
+            <a href="mailto:felikss.vacko@example.com" class="contacts__email">felikss.vacko@example.com</a>
+            <a href="https://github.com/felikss-vacko" class="contacts__github" target="_blank">GitHub</a>
+          </p>
+        </div>
+      </div>
     </div>
   </main>
+
+  <footer>
+    &copy; Aleksandrs Kuzņecovs un Felikss Vacko (2024)
+  </footer>
 
   <!-- <script type="text/javascript">
     function googleTranslateElementInit() {

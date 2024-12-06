@@ -124,6 +124,8 @@ const check = (inequalityIndex, a, b, c, d) => {
 		result = [`Nederīgs ievads: ja b = 0, tad c jābūt pozitīvam.`, false];
 	} else if (inequalityIndex <= 0 || inequalityIndex > 2) {
 		result = ['Lūdzu, izvēlieties pareizo nevienādību.', false];
+	} else if ((a = 0 && inequalityIndex == 1)) {
+		result = [`Nederīgs ievads: a nevar būt 0.`, false];
 	}
 
 	return result;
@@ -240,8 +242,11 @@ const cubicSolve = (a, b, c, d) => {
 	for (let i = 0; i <= roots.length; i++) {
 		const left = i === 0 ? -Infinity : roots[i - 1];
 		const right = i === roots.length ? Infinity : roots[i];
-		const mid = (left + right) / 2;
-		const y = a * Math.pow(mid, 3) + b * Math.pow(mid, 2) + c * mid + d;
+
+		const testPoint = left === -Infinity ? right - 1 : right === Infinity ? left + 1 : (left + right) / 2;
+
+		const y = a * Math.pow(testPoint, 3) + b * Math.pow(testPoint, 2) + c * testPoint + d;
+
 		if (y > 0) {
 			intervals.push(`(${left === -Infinity ? '-∞' : left.toFixed(2)}; ${right === Infinity ? '∞' : right.toFixed(2)})`);
 		}
@@ -259,6 +264,8 @@ const cubicSolve = (a, b, c, d) => {
 
 	// 	ctx.fillRect(Math.min(startX, endX), 0, Math.abs(endX - startX), myCanvas.height);
 	// }
+	console.log('Корни уравнения:', roots);
+	console.log('Интервалы:', intervals);
 
 	return [`x ∈ ${intervals.join(' ∪ ')}`, true];
 };
@@ -276,7 +283,7 @@ const logarithmicSolve = (a, b, c, d) => {
 	const xScale = 10; // Adjust for scaling the x-axis
 	const yScale = 10; // Adjust for scaling the y-axis
 
-	for (let x = xStart / xScale; x <= xEnd / xScale; x += 0.01) {
+	for (let x = xStart / xScale; x <= xEnd / xScale; x += 0.005) {
 		// smaller step for smoother graph
 		let logArgument = b * x + c; // Argument of the logarithm
 		if (logArgument > 0) {

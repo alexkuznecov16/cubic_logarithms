@@ -450,9 +450,121 @@ footer {
   padding: 20px 0;
 }
 
+/*! About page - main block ============================================================================================= */
+.about {
+  padding: 20px 0;
+}
+
+.about__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.about__item {
+  flex: 1 1 calc(50% - 20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about__item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-title {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.about__item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.about__item a {
+  text-decoration: none;
+  color: red;
+}
+
+.about__item a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .about__item {
+    flex: 1 1 100%;
+  }
+}
+
+
 /*! Contacts page - main block ============================================================================================= */
 
-/* пиши пж все стили через классы, чтобы не было проблем с другими объектами*/
+.contacts {
+  padding: 20px 0;
+}
+
+.contacts__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.contacts__item {
+  flex: 1 1 calc(50% - 20px);
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contacts__item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contacts__name {
+  font-size: 1.25rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.contacts__class {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.contacts__info {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.contacts__links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contacts__links a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.contacts__links a:hover {
+  text-decoration: underline;
+}
+
 
 @media screen and (max-width: 1100px) {
   .header__nav.desktop {
