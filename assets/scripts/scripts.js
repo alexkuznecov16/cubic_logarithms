@@ -101,10 +101,10 @@ const selectInequality = inequalityIndex => {
 // main function
 const main = () => {
 	const selectedInequality = parseInt(document.getElementById('test').value); // get selected inequality index
-	const input1 = parseInt(document.getElementById('input1').value); // a value
-	const input2 = parseInt(document.getElementById('input2').value); // b value
-	const input3 = parseInt(document.getElementById('input3').value); // c value
-	const input4 = parseInt(document.getElementById('input4').value); // d value
+	const input1 = parseFloat(document.getElementById('input1').value, 10); // a value
+	const input2 = parseFloat(document.getElementById('input2').value, 10); // b value
+	const input3 = parseFloat(document.getElementById('input3').value, 10); // c value
+	const input4 = parseFloat(document.getElementById('input4').value, 10); // d value
 
 	const checking = check(selectedInequality, input1, input2, input3, input4); // returns array of result
 
@@ -118,14 +118,16 @@ const main = () => {
 const check = (inequalityIndex, a, b, c, d) => {
 	let result = ['', true]; // initial result
 
-	if (a < -100 || a > 100 || b < -100 || b > 100 || c < -100 || c > 100 || d < -100 || d > 100) {
-		result = ['Lūdzu, ievadiet skaitļus, kas mazāks par 100 un lielāks par -100.', false];
+	if (a < -20 || a > 20 || b < -20 || b > 20 || c < -20 || c > 20 || d < -20 || d > 20) {
+		result = ['Lūdzu, ievadiet skaitļus, kas mazāks par 20 un lielāks par -20.', false];
 	} else if (b === 0 && c <= 0 && inequalityIndex == 2) {
 		result = [`Nederīgs ievads: ja b = 0, tad c jābūt pozitīvam.`, false];
 	} else if (inequalityIndex <= 0 || inequalityIndex > 2) {
 		result = ['Lūdzu, izvēlieties pareizo nevienādību.', false];
-	} else if ((a = 0 && inequalityIndex == 1)) {
-		result = [`Nederīgs ievads: a nevar būt 0.`, false];
+	} else if (!Number.isInteger(a) || !Number.isInteger(b) || !Number.isInteger(c) || !Number.isInteger(d)) {
+		result = ['Lūdzu, ievadiet tikai veseļus skaitļus', false];
+	} else if (a <= 0) {
+		result = ['Nederīgs ievads: a jābūt pozitivām', false];
 	}
 
 	return result;
@@ -191,7 +193,7 @@ const cubicSolve = (a, b, c, d) => {
 
 	ctx.beginPath();
 	ctx.strokeStyle = 'blue';
-	ctx.lineWidth = 1.5;
+	ctx.lineWidth = 2;
 
 	const minX = -centerX / scaleX;
 	const maxX = centerX / scaleX;
@@ -239,6 +241,7 @@ const cubicSolve = (a, b, c, d) => {
 
 	roots.sort((a, b) => a - b);
 	const intervals = [];
+
 	for (let i = 0; i <= roots.length; i++) {
 		const left = i === 0 ? -Infinity : roots[i - 1];
 		const right = i === roots.length ? Infinity : roots[i];
@@ -247,7 +250,7 @@ const cubicSolve = (a, b, c, d) => {
 
 		const y = a * Math.pow(testPoint, 3) + b * Math.pow(testPoint, 2) + c * testPoint + d;
 
-		if (y > 0) {
+		if ((a > 0 && y > 0) || (a < 0 && y < 0)) {
 			intervals.push(`(${left === -Infinity ? '-∞' : left.toFixed(2)}; ${right === Infinity ? '∞' : right.toFixed(2)})`);
 		}
 	}
@@ -353,7 +356,7 @@ const refresh = () => {
 	const koeficienti = document.querySelector('.coefficients-info');
 	const textarea = document.getElementById('result-area');
 	errorText.innerHTML = '';
-	koeficienti.innerHTML = '';
+	koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
 	textarea.value = '';
 
 	ctx.beginPath();

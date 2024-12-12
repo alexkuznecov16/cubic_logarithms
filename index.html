@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lv">
 
 <head>
   <meta charset="UTF-8">
@@ -23,7 +23,6 @@
         <nav class="header__nav desktop">
           <a href="./index.html">Sākumlapa</a>
           <a href="./assets/pages/about.html">Par</a>
-          <a href="./assets/pages/contacts.html">Kontakti</a>
         </nav>
         <i class="fa-solid fa-bars open-btn" id='mobileMenu-opener' onclick='mobileOpen()'></i>
       </div>
@@ -35,13 +34,12 @@
         <nav class="mobile__nav">
           <a href="./index.html">Sākumlapa</a>
           <a href="./assets/pages/about.html">Par</a>
-          <a href="./assets/pages/contacts.html">Kontakti</a>
         </nav>
       </div>
     </div>
   </header>
+  <!-- Inequalities area start -->
   <main class='Main'>
-    <!-- <div id="google_translate">Change language:</div> -->
     <div class="container">
       <div class="main__inner">
         <div class="main-left">
@@ -49,19 +47,19 @@
           <div class="inputs">
             <div class="input">
               <label for="input1">a:</label>
-              <input id='input1' name='input1' type="number" min='-100' max='100' value='1'>
+              <input id='input1' name='input1' type="number" min='1' max='20' value='1'>
             </div>
             <div class="input">
               <label for="input2">b:</label>
-              <input id='input2' name='input2' type="number" min='-100' max='100' value='2'>
+              <input id='input2' name='input2' type="number" min='-20' max='20' value='2'>
             </div>
             <div class="input">
               <label for="input3">c:</label>
-              <input id='input3' name='input3' type="number" min='-100' max='100' value='3'>
+              <input id='input3' name='input3' type="number" min='-20' max='20' value='3'>
             </div>
             <div class="input">
               <label for="input4">d:</label>
-              <input id='input4' name='input4' type="number" min='-100' max='100' value='4'>
+              <input id='input4' name='input4' type="number" min='-20' max='20' value='4'>
             </div>
           </div>
           <button type='button' onclick='main()' id='solveBtn'>Atrisināt</button>
@@ -89,18 +87,13 @@
       </div>
     </div>
   </main>
+  <!-- Inequalities area end -->
   <footer>
     &copy; Aleksandrs Kuzņecovs un Felikss Vacko (2024)
   </footer>
 
   <script src="./assets/scripts/scripts.js"></script>
   <script type="text/javascript">
-    /*function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        { pageLanguage: 'en', includedLanguages: 'en,lv,ru' },
-        'google_translate'
-      );
-    };*/
 
     $(document).ready(function () {
       $('#test').select2({
@@ -119,11 +112,11 @@
       alert(`Darbības algoritms:
 
 1. Izvēlieties vajadzīgo nevienādībū
-2. Ievadiet koeficientu vērtību (no -100 līdz 100)
+2. Ievadiet koeficientu vērtību (no -20 līdz 20)
 3. Noklikšķiniet uz pogas "atrisināt"`)
     }
   </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!-- <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> -->
 </body>
 
 </html>
