@@ -332,8 +332,8 @@ const logarithmicSolve = (a, b, c, d) => {
 	const root = (exponentValue - c) / b;
 	const minX = -c / b;
 
-	let x1 = minX; // область, где x >= -c / b
-	let x2 = root; // область, где x < e^(-d / a)
+	let x1 = minX;
+	let x2 = root;
 	const inequalitySign = a < 0 || b < 0 ? '>' : '<';
 	let interval = null;
 
@@ -394,7 +394,9 @@ const refresh = () => {
 	errorText.innerHTML = '';
 	koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
 	textarea.value = '';
-	document.getElementById('test').value = '0';
+	const select = document.getElementById('test');
+	const firstOptionValue = select.options[0].value;
+	select.value = firstOptionValue;
 	document.querySelector('#input1').value = 1;
 	document.querySelector('#input2').value = 2;
 	document.querySelector('#input3').value = 3;
