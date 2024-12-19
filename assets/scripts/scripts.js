@@ -56,27 +56,27 @@ const selectInequality = inequalityIndex => {
 	const koeficienti = document.querySelector('.coefficients-info');
 
 	if (inequalityIndex > 0) {
-		btn.disabled = false;
-		btn.classList.remove('disabled');
+		// btn.disabled = false;
+		// btn.classList.remove('disabled');
 		errorText.style.color = 'green'; // not error color
 		errorText.innerHTML = 'Derīga nevienādība'; // not error text
 
 		const formulaArea = document.querySelector('.formula');
 		if (inequalityIndex == 2) {
-			formulaArea.innerHTML = `a ln(bx + c) + d &lt; 0`;
+			formulaArea.innerHTML = `y = a ln(bx + c) + d`;
 			koeficienti.innerHTML = `            <details>
               <summary>
                 Koeficientu ietekme
               </summary>
               <ul>
-                <li><b>a:</b> Mērogo grafiku pa Y asi. Ja <b>a > 0</b>, grafiks ir augošs; ja <b>a < 0</b>, grafiks ir dilstošs.</li>
+                <li><b>a:</b> Atbildīgs par elastības līmeni. Jo lielāka ir a vērtība, jo vairāk lieces virziens ir vērsts uz Y asi.</li>
                 <li><b>b:</b> Izstiepšana/saspiešana pa X asi. Ja <b>b > 0</b>, grafiks būs šaurāks; ja <b>b < 0</b>, grafiks būs platāks.</li>
-                <li><b>c:</b> Grafika nobīde pa X asi. Ja <b>c > 0</b>, grafiks pārvietojas pa labi; ja <b>c < 0</b>, pa kreisi.</li>
+                <li><b>c:</b> Grafika nobīde pa X asi. Ja <b>c > 0</b>, grafiks pārvietojas pa kreisi; ja <b>c < 0</b>, pa labi.</li>
                 <li><b>d:</b> Grafika nobīde uz augšu (<b>d > 0</b>) vai uz leju (<b>d < 0</b>).</li>
               </ul>
             </details>`;
 		} else if (inequalityIndex == 1) {
-			formulaArea.innerHTML = `ax<sup>3</sup> + bx<sup>2</sup> + cx + d > 0`;
+			formulaArea.innerHTML = `y = ax<sup>3</sup> + bx<sup>2</sup> + cx + d`;
 			koeficienti.innerHTML = `            <details>
               <summary>
                 Koeficientu ietekme
@@ -90,8 +90,8 @@ const selectInequality = inequalityIndex => {
             </details>`;
 		}
 	} else {
-		btn.disabled = true;
-		btn.classList.add('disabled');
+		// btn.disabled = true;
+		// btn.classList.add('disabled');
 		errorText.style.color = 'red'; // error color
 		errorText.innerHTML = 'Kļūda: nederīga nevienādība'; // error text
 		koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
@@ -171,14 +171,26 @@ const cells = () => {
 };
 
 const solve = (inequalityIndex, a, b, c, d) => {
+	const formulaArea = document.querySelector('.formula');
+
 	cells();
 	let resultText = '';
 	let isTrue = false;
 
 	// в зависимости какую пользователь выбрал функцию
 	if (inequalityIndex == 1) {
+		const aText = a < 0 ? `${a}` : `${a}`;
+		const bText = b < 0 ? `(${b})` : `+ ${b}`;
+		const cText = c < 0 ? `(${c})` : `+ ${c}`;
+		const dText = d < 0 ? `(- ${Math.abs(d)})` : `+ ${d}`;
+		formulaArea.innerHTML = `y = ${aText}x<sup>3</sup> ${bText}x<sup>2</sup> ${cText}x ${dText}`;
 		[resultText, isTrue] = cubicSolve(a, b, c, d, ctx);
 	} else if (inequalityIndex == 2) {
+		const aText = a < 0 ? `${a}` : `${a}`;
+		const bText = b < 0 ? `${b}` : `${b}`;
+		const cText = c < 0 ? `${c}` : `+ ${c}`;
+		const dText = d < 0 ? `- ${Math.abs(d)}` : `+ ${d}`;
+		formulaArea.innerHTML = `y = ${aText} ln(${bText}x ${cText}) ${dText}`;
 		[resultText, isTrue] = logarithmicSolve(a, b, c, d);
 	}
 
@@ -267,10 +279,18 @@ const cubicSolve = (a, b, c, d) => {
 
 	// 	ctx.fillRect(Math.min(startX, endX), 0, Math.abs(endX - startX), myCanvas.height);
 	// }
-	console.log('Корни уравнения:', roots);
-	console.log('Интервалы:', intervals);
+	// console.log('Корни уравнения:', roots);
+	// console.log('Интервалы:', intervals);
 
-	return [`x ∈ ${intervals.join(' ∪ ')}`, true];
+	const aText = `${a}`;
+	const bText = b < 0 ? `${b.toFixed(0)}` : `+ ${b.toFixed(0)}`;
+	const cText = c < 0 ? `${c.toFixed(0)}` : `+ ${c.toFixed(0)}`;
+	const dText = d < 0 ? `- ${Math.abs(d.toFixed(0))}` : `+ ${d.toFixed(0)}`;
+
+	const inequalityText = `${aText}x³ ${bText}x² ${cText}x ${dText} > 0`;
+	const rootsText = roots.map((root, index) => `x${index + 1} = ${root}`).join(', ');
+
+	return [`${inequalityText}\n\n${rootsText}\nx ∈ ${intervals.join(' ∪ ')}`, true];
 };
 
 const logarithmicSolve = (a, b, c, d) => {
@@ -312,33 +332,49 @@ const logarithmicSolve = (a, b, c, d) => {
 	const root = (exponentValue - c) / b;
 	const minX = -c / b;
 
+	let x1 = minX; // область, где x >= -c / b
+	let x2 = root; // область, где x < e^(-d / a)
 	const inequalitySign = a < 0 || b < 0 ? '>' : '<';
-	let interval;
+	let interval = null;
 
-	if (inequalitySign === '>') {
-		interval = `(${root.toFixed(2)}, +∞)`;
+	if (b > 0) {
+		// Case when b > 0
+		if (a > 0) {
+			interval = `(${minX.toFixed(2)}, ${root.toFixed(2)})`;
+		} else {
+			interval = `(${root.toFixed(2)}, +∞)`;
+		}
 	} else {
+		// Case when b < 0
+		if (a > 0) {
+			interval = `(${root.toFixed(2)}, ${minX.toFixed(2)})`;
+		} else {
+			interval = `(-∞, ${root.toFixed(2)})`;
+		}
+	}
+
+	// Adjust interval if necessary for specific cases
+	if (b < 0 && a > 0 && root < minX) {
+		x1 = -Infinity;
+		x2 = root;
 		interval = `(-∞, ${root.toFixed(2)})`;
 	}
 
-	if (inequalitySign === '>' && root < minX) {
-		interval = `(${c} / ${b}, +∞)`;
-	} else if (inequalitySign === '<' && root > minX) {
-		interval = `(-${c} / ${b}, ${root.toFixed(2)})`;
-	} else if (inequalitySign === '>' && root > minX) {
-		interval = `(-∞, +∞)`;
-	}
+	// console.log(`1) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) ${d < 0 ? '- ' + Math.abs(d) : '+ ' + d} < 0`);
+	// console.log(`2) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) < ${-d} | /${a}`);
+	// console.log(`3) ln(${b}x ${c < 0 ? c : '+ ' + c}) ${a < 0 ? '>' : '<'} ${-d / a}`);
+	// console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
+	// console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
 
-	console.log(`1) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) ${d < 0 ? '- ' + Math.abs(d) : '+ ' + d} < 0`);
-	console.log(`2) ${a} ln(${b}x ${c < 0 ? c : '+ ' + c}) < ${-d} | /${a}`);
-	console.log(`3) ln(${b}x ${c < 0 ? c : '+ ' + c}) ${a < 0 ? '>' : '<'} ${-d / a}`);
-	console.log(`4) ${b}x ${c < 0 ? c : '+ ' + c} ${a < 0 ? '>' : '<'} e^${exponent}`);
-	console.log(`5) ${b}x ${inequalitySign} e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}`);
+	// console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
+	// console.log(`Root: ${interval}`);
 
-	console.log(`6) x ${inequalitySign} (e^${exponent} ${c < 0 ? '+ ' + c : '- ' + c}) / ${b}`);
-	console.log(`Root: ${interval}`);
+	const aText = a < 0 ? `${a}` : `${a}`;
+	const bText = b < 0 ? `${b}` : `${b}`;
+	const cText = c < 0 ? `${c}` : `+ ${c}`;
+	const dText = d < 0 ? `- ${Math.abs(d)}` : `+ ${d}`;
 
-	return [`x ∈ ${interval}`, true];
+	return [`${aText} ln(${bText}x ${cText}) ${dText} < 0\n\nx1 = ${x1 === -Infinity ? '-∞' : x1.toFixed(2)}, x2 = ${x2 === Infinity ? '+∞' : x2.toFixed(2)}\n` + `x ∈ ${interval}`, true];
 };
 
 const result = (text, isTrue) => {
@@ -358,6 +394,11 @@ const refresh = () => {
 	errorText.innerHTML = '';
 	koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
 	textarea.value = '';
+	document.getElementById('test').value = '0';
+	document.querySelector('#input1').value = 1;
+	document.querySelector('#input2').value = 2;
+	document.querySelector('#input3').value = 3;
+	document.querySelector('#input4').value = 4;
 
 	ctx.beginPath();
 	ctx.fillStyle = '#fff';

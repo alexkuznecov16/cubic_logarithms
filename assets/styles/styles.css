@@ -234,7 +234,7 @@ header {
 }
 
 .formula {
-  width: 180px;
+  width: 240px;
   font-weight: 500;
 }
 
@@ -336,7 +336,8 @@ textarea {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 4px;
+  padding: 10px;
+  min-height: 125px;
 }
 
 .main-centre canvas {
