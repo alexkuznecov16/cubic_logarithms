@@ -395,8 +395,8 @@ const refresh = () => {
 	koeficienti.innerHTML = 'Lūdzu, izvēlieties nevienādību';
 	textarea.value = '';
 	const select = document.getElementById('test');
-	const firstOptionValue = select.options[0].value;
-	select.value = firstOptionValue;
+	select.value = select.options[0].value;
+	select.dispatchEvent(new Event('change')); // from Mozilla developer
 	document.querySelector('#input1').value = 1;
 	document.querySelector('#input2').value = 2;
 	document.querySelector('#input3').value = 3;
